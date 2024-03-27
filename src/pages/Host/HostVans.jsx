@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 
 function HostVans() {
+	const [searchParams, setSearchParams] = useSearchParams()
 	const [vanList, setVanList] = useState([])
 
 	useEffect(() => {
@@ -10,9 +11,13 @@ function HostVans() {
 			.then((data) => setVanList(data.vans))
 	}, [])
 
+	const typeFilter = searchParams.get("type")
+
+	console.log(typeFilter)
+
 	const renderHostVanElements = vanList.map((van) => (
 		<Link
-			to={`/host/vans/${van.id}`}
+			to={`${van.id}`}
 			key={van.id}
 			className="host-van-link-wrapper"
 		>
