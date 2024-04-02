@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react"
-import { Link, useSearchParams } from "react-router-dom"
+import { Link, useSearchParams, useLoaderData } from "react-router-dom"
+import { getVans } from "../../api"
+
+export function loader() {
+	// console.log(getVans())
+	return getVans()
+}
 
 function Vans() {
-	const [vans, setVans] = useState([])
+	// const [vans, setVans] = useState([])
 	const [searchParams, setSearchParams] = useSearchParams()
 
-	useEffect(() => {
-		fetch("/api/vans")
-			.then((res) => res.json())
-			.then((data) => setVans(data.vans))
-	}, [])
+	const vans = useLoaderData()
+
+	// useEffect(() => {
+	// 	fetch("/api/vans")
+	// 		.then((res) => res.json())
+	// 		.then((data) => setVans(data.vans))
+	// }, [])
 	// console.log(vans)
 
 	const typeFilter = searchParams.get("type")
@@ -18,7 +26,7 @@ function Vans() {
 		? vans.filter((van) => van.type === typeFilter)
 		: vans
 
-	console.log(searchParams)
+	// console.log(searchParams)
 
 	function handleFilterChange(key, value) {
 		setSearchParams((prev) => {

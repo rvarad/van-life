@@ -13,7 +13,7 @@ function HostVans() {
 
 	const typeFilter = searchParams.get("type")
 
-	console.log(typeFilter)
+	// console.log(typeFilter)
 
 	const renderHostVanElements = vanList.map((van) => (
 		<Link
