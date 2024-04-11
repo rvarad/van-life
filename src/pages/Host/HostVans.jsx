@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from "react"
-import { Link, useSearchParams } from "react-router-dom"
+import { Link, useSearchParams, useLoaderData } from "react-router-dom"
+import { getHostVans } from "../../api"
+import { requireAuth } from "../../utils"
+
+export async function loader({ request }) {
+	await requireAuth(request)
+	return getHostVans()
+}
 
 function HostVans() {
 	const [searchParams, setSearchParams] = useSearchParams()
-	const [vanList, setVanList] = useState([])
+	// const [vanList, setVanList] = useState([])
+	const vanList = useLoaderData()
+	console.log(vanList)
 
-	useEffect(() => {
-		fetch("/api/host/vans")
-			.then((res) => res.json())
-			.then((data) => setVanList(data.vans))
-	}, [])
+	// useEffect(() => {
+	// 	fetch("/api/host/vans")
+	// 		.then((res) => res.json())
+	// 		.then((data) => setVanList(data.vans))
+	// }, [])
 
 	const typeFilter = searchParams.get("type")
 
@@ -41,11 +50,7 @@ function HostVans() {
 		<section>
 			<h1 className="host-vans-title">Your listed vans</h1>
 			<div className="host-vans-list">
-				{vanList.length > 0 ? (
-					<section>{renderHostVanElements}</section>
-				) : (
-					<h2>Loading...</h2>
-				)}
+				<section>{renderHostVanElements}</section>
 			</div>
 		</section>
 	)

@@ -1,18 +1,31 @@
 import React, { useEffect, useState } from "react"
-import { useParams, Link, NavLink, Outlet } from "react-router-dom"
+import {
+	useParams,
+	Link,
+	NavLink,
+	Outlet,
+	useLoaderData,
+} from "react-router-dom"
+import { getHostVans } from "../../api"
+import { requireAuth } from "../../utils"
+
+export async function loader({ params, request }) {
+	await requireAuth(request)
+	return getHostVans(params.id)
+}
 
 function HostVanDetails() {
-	const { id } = useParams()
+	const van = useLoaderData()
+	// const { id } = useParams()
+	// const [van, setVan] = useState(null)
 
-	const [van, setVan] = useState(null)
-
-	useEffect(() => {
-		fetch(`/api/host/vans/${id}`)
-			.then((res) => res.json())
-			.then((data) => setVan(data.vans))
-		// .then((data) => console.log(data.vans))
-		// console.log(van)
-	}, [])
+	// useEffect(() => {
+	// 	fetch(`/api/host/vans/${id}`)
+	// 		.then((res) => res.json())
+	// 		.then((data) => setVan(data.vans))
+	// 	// .then((data) => console.log(data.vans))
+	// 	// console.log(van)
+	// }, [])
 
 	// if (!van) {
 	// 	return <h1>Loading...</h1>
