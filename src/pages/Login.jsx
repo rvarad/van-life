@@ -5,6 +5,7 @@ import {
 	useActionData,
 	Form,
 	redirect,
+	Link,
 } from "react-router-dom"
 import { loginUser } from "../api"
 
@@ -37,7 +38,17 @@ function Login() {
 	const message = useLoaderData()
 	const status = useNavigation().state
 
-	return (
+	return localStorage.getItem("loggedIn") ? (
+		<>
+			<h1>You are already logged in</h1>
+			<h3>
+				<Link to={"/host"}>Go to Host Dashboard</Link>
+			</h3>
+			<button onClick={() => localStorage.removeItem("loggedIn")}>
+				<Link to={"/"}>Logout</Link>
+			</button>
+		</>
+	) : (
 		<div className="login-container">
 			<h1>Login to your account</h1>
 			{error && <h3 className="red">{error}</h3>}

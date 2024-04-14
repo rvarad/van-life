@@ -23,7 +23,7 @@ createServer({
 		// this.timing = 2000
 
 		this.get("/vans", (schema, request) => {
-			// return new Response(400, {}, {error: "Error fetching data"})
+			// return new Response(400, {}, { error: "Error fetching data" })
 			return schema.vans.all()
 		})
 
@@ -34,6 +34,7 @@ createServer({
 
 		this.get("/host/vans", (schema, request) => {
 			// Hard-code the hostId for now
+			// return new Response(400, {}, { error: "Error fetching data" })
 			return schema.vans.where({ hostId: "123" })
 		})
 

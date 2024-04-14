@@ -13,7 +13,9 @@ import Vans, { loader as vansLoader } from "./pages/Vans/Vans"
 import VanDetails, { loader as vanDetailsLoader } from "./pages/Vans/VanDetails"
 import Layout from "./components/Layout"
 import HostLayout from "./components/HostLayout"
-import Dashboard from "./pages/Host/Dashboard"
+import Dashboard, {
+	loader as hostDashboardLoader,
+} from "./pages/Host/Dashboard"
 import Income from "./pages/Host/Income"
 import Reviews from "./pages/Host/Reviews"
 import HostVans, { loader as hostVansLoader } from "./pages/Host/HostVans"
@@ -33,10 +35,7 @@ import { requireAuth } from "./utils"
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
-		<Route
-			element={<Layout />}
-			errorElement={<Error />}
-		>
+		<Route element={<Layout />}>
 			<Route
 				index
 				element={<Home />}
@@ -44,11 +43,12 @@ const router = createBrowserRouter(
 			<Route
 				path="host"
 				element={<HostLayout />}
+				errorElement={<Error />}
 			>
 				<Route
 					index
 					element={<Dashboard />}
-					loader={async ({ request }) => await requireAuth(request)}
+					loader={hostDashboardLoader}
 				/>
 				<Route
 					path="income"
@@ -94,6 +94,7 @@ const router = createBrowserRouter(
 			<Route
 				path="vans"
 				element={<Vans />}
+				errorElement={<Error />}
 				loader={vansLoader}
 			/>
 			<Route
@@ -107,6 +108,7 @@ const router = createBrowserRouter(
 				loader={loginLoader}
 				action={loginAction}
 			/>
+
 			<Route
 				path="*"
 				element={<NotFound />}

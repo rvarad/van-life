@@ -1,18 +1,24 @@
-import React, { useState, useEffect } from "react"
-import { Link, useSearchParams, useLoaderData } from "react-router-dom"
+import React, { useState, useEffect, Suspense } from "react"
+import {
+	Link,
+	useSearchParams,
+	useLoaderData,
+	defer,
+	Await,
+} from "react-router-dom"
 import { getHostVans } from "../../api"
 import { requireAuth } from "../../utils"
 
 export async function loader({ request }) {
 	await requireAuth(request)
-	return getHostVans()
+	return defer({ vanList: getHostVans() })
 }
 
 function HostVans() {
 	const [searchParams, setSearchParams] = useSearchParams()
 	// const [vanList, setVanList] = useState([])
-	const vanList = useLoaderData()
-	console.log(vanList)
+	const vanListPromise = useLoaderData()
+	// console.log(vanList)
 
 	// useEffect(() => {
 	// 	fetch("/api/host/vans")
@@ -24,34 +30,42 @@ function HostVans() {
 
 	// console.log(typeFilter)
 
-	const renderHostVanElements = vanList.map((van) => (
-		<Link
-			to={`${van.id}`}
-			key={van.id}
-			className="host-van-link-wrapper"
-		>
-			<div
-				className="host-van-single"
+	function renderHostVanElements(vanList) {
+		const hostVanElements = vanList.map((van) => (
+			<Link
+				to={`${van.id}`}
 				key={van.id}
+				className="host-van-link-wrapper"
 			>
-				<img
-					src={van.imageUrl}
-					alt={`Photo of ${van.name}`}
-				/>
-				<div className="host-van-info">
-					<h3>{van.name}</h3>
-					<p>${van.price}/day</p>
+				<div
+					className="host-van-single"
+					key={van.id}
+				>
+					<img
+						src={van.imageUrl}
+						alt={`Photo of ${van.name}`}
+					/>
+					<div className="host-van-info">
+						<h3>{van.name}</h3>
+						<p>${van.price}/day</p>
+					</div>
 				</div>
+			</Link>
+		))
+
+		return (
+			<div className="host-vans-list">
+				<section>{hostVanElements}</section>
 			</div>
-		</Link>
-	))
+		)
+	}
 
 	return (
 		<section>
 			<h1 className="host-vans-title">Your listed vans</h1>
-			<div className="host-vans-list">
-				<section>{renderHostVanElements}</section>
-			</div>
+			<Suspense fallback={<h2>Loading...</h2>}>
+				<Await resolve={vanListPromise.vanList}>{renderHostVanElements}</Await>
+			</Suspense>
 		</section>
 	)
 }
