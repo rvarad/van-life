@@ -1,8 +1,9 @@
-# React + Vite
+# Vanlife
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A market-place for van rentals.
 
-Currently, two official plugins are available:
+List your vans, rent new ones.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Built using ReactJS for UI, React Router for client-side routing.
+
+# Live : [Vanlife](https://rvarad-vanlife.netlify.app/)
